@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>טודו-פיל - נעלי ריקוד לפילים</title>
+    <!-- Tailwind CSS for modern styling and responsiveness -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        elephant: {
+                            50: '#f4f6f8',
+                            100: '#e2e8f0',
+                            200: '#cbd5e1',
+                            500: '#64748b',
+                            700: '#334155',
+                            900: '#1e293b',
+                        },
+                        pastel: {
+                            pink: '#ffd1dc',
+                            yellow: '#fef08a',
+                            mint: '#bbf7d0',
+                            lavender: '#e9d5ff',
+                            peach: '#fed7aa',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Rubik', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: #faf9f6;
+            color: #2d3748;
+        }
+        .view-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+        .view-section.active {
+            display: block;
+            opacity: 1;
+        }
+        /* Custom smooth bouncy float animation */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+        .float-anim {
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-pastel-pink selection:text-elephant-900">
+
+    <!-- Header & Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-elephant-100">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3 space-x-reverse cursor-pointer" onclick="switchView('home')">
+                <div class="w-12 h-12 bg-pastel-pink rounded-2xl flex items-center justify-center text-2xl shadow-inner transform hover:scale-105 transition">
+                    🐘🩰
+                </div>
+                <div>
+                    <h1 class="font-bold text-xl text-elephant-900 leading-tight">פיל-דה-דאנס</h1>
+                    <p class="text-xs text-elephant-500">נעלי ריקוד בהתאמה אישית ענקית</p>
+                </div>
+            </div>
+
+            <!-- Desktop Navigation Menu -->
+            <nav class="hidden md:flex items-center space-x-1 space-x-reverse">
+                <button onclick="switchView('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-xl text-sm font-medium text-elephant-700 bg-pastel-pink/40 hover:bg-pastel-pink/70 transition">דף בית</button>
+                <button onclick="switchView('offer')" id="nav-offer" class="nav-btn px-4 py-2 rounded-xl text-sm font-medium text-elephant-700 hover:bg-pastel-yellow/50 transition">מה אנחנו מציעים</button>
+                <button onclick="switchView('about')" id="nav-about" class="nav-btn px-4 py-2 rounded-xl text-sm font-medium text-elephant-700 hover:bg-pastel-lavender/50 transition">אודות</button>
+                <button onclick="switchView('contact')" id="nav-contact" class="nav-btn px-4 py-2 rounded-xl text-sm font-medium text-elephant-700 hover:bg-pastel-mint/50 transition">צור קשר</button>
+            </nav>
+
+            <!-- Call to Action Button & Mobile Menu Toggle -->
+            <div class="flex items-center space-x-2 space-x-reverse">
+                <button onclick="switchView('offer')" class="hidden sm:inline-block bg-elephant-900 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-elephant-700 shadow-md transition transform hover:-translate-y-0.5">
+                    הקולקציה הענקית 🪩
+                </button>
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-xl text-elephant-700 hover:bg-elephant-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-elephant-100 px-4 pt-2 pb-4 space-y-2">
+            <button onclick="switchView('home'); toggleMobileMenu();" class="block w-full text-right px-4 py-2 rounded-lg font-medium text-elephant-700 hover:bg-pastel-pink/40">דף בית</button>
+            <button onclick="switchView('offer'); toggleMobileMenu();" class="block w-full text-right px-4 py-2 rounded-lg font-medium text-elephant-700 hover:bg-pastel-yellow/50">מה אנחנו מציעים</button>
+            <button onclick="switchView('about'); toggleMobileMenu();" class="block w-full text-right px-4 py-2 rounded-lg font-medium text-elephant-700 hover:bg-pastel-lavender/50">אודות</button>
+            <button onclick="switchView('contact'); toggleMobileMenu();" class="block w-full text-right px-4 py-2 rounded-lg font-medium text-elephant-700 hover:bg-pastel-mint/50">צור קשר</button>
+        </div>
+    </header>
+
+    <!-- Main Content Views Container -->
+    <main class="flex-grow">
+
+        <!-- ================= VIEW 1: HOME (דף בית) ================= -->
+        <section id="view-home" class="view-section active py-12 px-4">
+            <div class="max-w-6xl mx-auto">
+                <!-- Hero Banner -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center bg-gradient-to-br from-pastel-pink/30 via-pastel-lavender/20 to-pastel-yellow/30 p-8 sm:p-12 rounded-3xl shadow-sm border border-elephant-100 relative overflow-hidden">
+                    <div class="space-y-6 z-10">
+                        <span class="inline-block bg-pastel-pink text-elephant-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                            ✨ הבשורה הגדולה בעולם הריקוד
+                        </span>
+                        <h2 class="text-4xl sm:text-5xl font-extrabold text-elephant-900 leading-tight">
+                            גם פילים יודעים לרקוד, <br><span class="text-indigo-600">ובעיקר מגיע להם סטייל!</span>
+                        </h2>
+                        <p class="text-lg text-elephant-700">
+                            ברוכים הבאים לחנות הראשונה בעולם המותخصצת בנעלי בלט, נעלי טפס (Tap), וסניקרס סלסה במידה 75 ומעלה. רכות, בולמות זעזועים, ועמידות בפני משקל של 6 טון!
+                        </p>
+                        <div class="flex flex-wrap gap-4 pt-2">
+                            <button onclick="switchView('offer')" class="bg-elephant-900 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:bg-elephant-700 transition transform hover:-translate-y-1">
+                                צפה בקולקציית הנעליים 🩰
+                            </button>
+                            <button onclick="switchView('contact')" class="bg-white text-elephant-900 border border-elephant-200 px-6 py-3 rounded-xl font-semibold shadow-sm hover:bg-elephant-50 transition">
+                                התאמת מידה אישית 📏
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex justify-center items-center relative">
+                        <div class="absolute w-72 h-72 bg-pastel-yellow/50 rounded-full filter blur-2xl -z-10 animate-pulse"></div>
+                        <div class="text-9xl float-anim select-none p-8 bg-white/60 backdrop-blur rounded-full shadow-xl border border-white">
+                            🐘🩰
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features Highlight Grid -->
+                <div class="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-elephant-100 text-center hover:shadow-md transition">
+                        <div class="w-14 h-14 bg-pastel-mint rounded-2xl mx-auto flex items-center justify-center text-2xl mb-4">🛡️</div>
+                        <h3 class="font-bold text-lg text-elephant-900 mb-2">בולמי זעזועים הידראוליים</h3>
+                        <p class="text-sm text-elephant-500">מונע רעידות אדמה קלות באולמות הריקודים ומגן על הברכיים והחדק.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-elephant-100 text-center hover:shadow-md transition">
+                        <div class="w-14 h-14 bg-pastel-peach rounded-2xl mx-auto flex items-center justify-center text-2xl mb-4">🎨</div>
+                        <h3 class="font-bold text-lg text-elephant-900 mb-2">עיצובים מלכותיים</h3>
+                        <p class="text-sm text-elephant-500">ורוד פסטל, אפור אלגנטי, וזהב נוצץ שמתאימים לכל אירוע סוואנה נוצץ.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-elephant-100 text-center hover:shadow-md transition">
+                        <div class="w-14 h-14 bg-pastel-lavender rounded-2xl mx-auto flex items-center justify-center text-2xl mb-4">🤝</div>
+                        <h3 class="font-bold text-lg text-elephant-900 mb-2">התאמה אישית באמה</h3>
+                        <p class="text-sm text-elephant-500">מדוד את ההיקף והרגל בעזרת מומחים המבינים במשקל כבד ובקצב קלאסי.</p>
+                    </div>
+                </div>
+
+                <!-- Testimonial Section -->
+                <div class="mt-16 bg-elephant-900 text-white p-8 rounded-3xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="space-y-2">
+                        <span class="text-pastel-pink text-xs font-bold uppercase tracking-wider">לקוח מרוצה</span>
+                        <h3 class="text-2xl font-bold">"הפסקתי להרגיש מגושם על הרחבה!"</h3>
+                        <p class="text-elephant-200 text-sm max-w-xl">
+                            "אחרי שנים שדרכתי על כולם בריקודי עם ובסלסה, מצאתי את הנעליים של טודו-פיל. עכשיו אני עושה פירואטים כמו פיה שוקלת 6 טון." — יוסי הפיל, רקדן ראשון.
+                        </p>
+                    </div>
+                    <button onclick="switchView('offer')" class="bg-pastel-pink text-elephant-900 px-6 py-3 rounded-xl font-bold hover:bg-white transition whitespace-nowrap">
+                        גלה את הדגמים
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 2: WHAT WE OFFER (מה אנחנו מציעים) ================= -->
+        <section id="view-offer" class="view-section py-12 px-4">
+            <div class="max-w-6xl mx-auto space-y-12">
+                <!-- Section Header -->
+                <div class="text-center max-w-2xl mx-auto space-y-3">
+                    <span class="bg-pastel-yellow text-elephant-900 text-xs font-bold px-3 py-1 rounded-full">קטלוג הנעליים</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-elephant-900">הדגמים המובילים לעונת הריקודים</h2>
+                    <p class="text-elephant-500">כל זוג נעליים מיוצר בעבודת יד מחומרים עמידים במיוחד עם כריות אוויר כפולות.</p>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Product 1 -->
+                    <div class="bg-white rounded-3xl shadow-sm border border-elephant-100 overflow-hidden flex flex-col justify-between hover:shadow-lg transition">
+                        <div class="bg-pastel-pink/40 h-48 flex items-center justify-center text-7xl select-none">
+                            🩰🐘
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-bold text-elephant-900">נעלי בלט פרימה-פיל</h3>
+                                <span class="bg-pastel-pink text-elephant-900 text-xs font-bold px-2.5 py-1 rounded-lg">מידה 70-85</span>
+                            </div>
+                            <p class="text-sm text-elephant-500">
+                                מתאימות לעמידה על קצות האצבעות (למרות שקשה קצת לשמור על שיווי משקל, הנעליים האלו מספקות בסיס רחב במיוחד).
+                            </p><br>
+                            <div class="flex items-center justify-between pt-2 border-t border-elephant-100">
+                                <span class="text-lg font-extrabold text-elephant-900">₪1,450 <span class="text-xs font-normal text-elephant-500">לזוג</span></span>
+                                <button onclick="openOrderModal('נעלי בלט פרימה-פיל')" class="bg-elephant-900 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-elephant-700 transition">
+                                    הזמן עכשיו
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="bg-white rounded-3xl shadow-sm border border-elephant-100 overflow-hidden flex flex-col justify-between hover:shadow-lg transition">
+                        <div class="bg-pastel-yellow/40 h-48 flex items-center justify-center text-7xl select-none">
+                            👞🐘
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-bold text-elephant-900">נעלי טפס-טאפ תותחיות</h3>
+                                <span class="bg-pastel-yellow text-elephant-900 text-xs font-bold px-2.5 py-1 rounded-lg">מידה 72-90</span>
+                            </div>
+                            <p class="text-sm text-elephant-500">
+                                כוללות פלטות פלדה מחוזקות בסוליה ליצירת צליל "טיפ-טופ" מהדהד שיישמע היטב בכל רחבי הסוואנה.
+                            </p>
+                            <div class="flex items-center justify-between pt-2 border-t border-elephant-100">
+                                <span class="text-lg font-extrabold text-elephant-900">₪1,600 <span class="text-xs font-normal text-elephant-500">לזוג</span></span>
+                                <button onclick="openOrderModal('נעלי טפס-טאפ תותחיות')" class="bg-elephant-900 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-elephant-700 transition">
+                                    הזמן עכשיו
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="bg-white rounded-3xl shadow-sm border border-elephant-100 overflow-hidden flex flex-col justify-between hover:shadow-lg transition">
+                        <div class="bg-pastel-mint/40 h-48 flex items-center justify-center text-7xl select-none">
+                            👟🐘
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-bold text-elephant-900">סניקרס סלסה-לייט</h3>
+                                <span class="bg-pastel-mint text-elephant-900 text-xs font-bold px-2.5 py-1 rounded-lg">מידה 68-88</span>
+                            </div>
+                            <p class="text-sm text-elephant-500">
+                                סוליות גמישות במיוחד לסיבובי מותניים מהירים וקלילים, בלי להחליק על בוץ טרופי.
+                            </p><br>
+                            <div class="flex items-center justify-between pt-2 border-t border-elephant-100">
+                                <span class="text-lg font-extrabold text-elephant-900">₪1,290 <span class="text-xs font-normal text-elephant-500">לזוג</span></span>
+                                <button onclick="openOrderModal('סניקרס סלסה-לייט')" class="bg-elephant-900 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-elephant-700 transition">
+                                    הזמן עכשיו
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Perks -->
+                <div class="bg-pastel-lavender/30 border border-elephant-100 p-8 rounded-3xl grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-elephant-900 mb-2">אביזרים משלימים לפילים רוקדים</h3>
+                        <p class="text-sm text-elephant-700">ג'ל הגנה מיוחד לציפורניים, גרבי משי באורך 4 מטר, ותיקי נשיאה מיוחדים לחדק.</p>
+                    </div>
+                    <div class="flex justify-start sm:justify-end">
+                        <button onclick="switchView('contact')" class="bg-elephant-900 text-white px-6 py-3 rounded-xl font-semibold hover:bg-elephant-700 transition">
+                            שאל אותנו על חבילות VIP 🎁
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 3: ABOUT (אודות) ================= -->
+        <section id="view-about" class="view-section py-12 px-4">
+            <div class="max-w-4xl mx-auto space-y-12">
+                <!-- Story Header -->
+                <div class="text-center space-y-3">
+                    <span class="bg-pastel-lavender text-elephant-900 text-xs font-bold px-3 py-1 rounded-full">הסיפור שלנו</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-elephant-900">איך הכל התחיל?</h2>
+                    <p class="text-elephant-500 max-w-xl mx-auto">מחזון קטן בסוואנה ועד לחברת הנעליים המובילה לענקים בעולם.</p>
+                </div>
+
+                <!-- Story Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-elephant-100 space-y-4">
+                        <div class="text-4xl">🌱</div>
+                        <h3 class="text-xl font-bold text-elephant-900">החזון של ד"ר פילגוד</h3>
+                        <p class="text-sm text-elephant-600 leading-relaxed">
+                            הכל החל בשנת 2012, כאשר מייסד החברה, מהנדס מכונות וצופה פילים נלהב, הבחין שפילים רבים נפצעים בקרסוליים בגלל ריקודים יחפים על אדמה קשה. הוא החליט לשנות את ההיסטוריה ולפתח סוליות ארגונומיות ענקיות.
+                        </p>
+                    </div>
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-elephant-100 space-y-4">
+                        <div class="text-4xl">🏆</div>
+                        <h3 class="text-xl font-bold text-elephant-900">תקן איכות בינלאומי</h3>
+                        <p class="text-sm text-elephant-600 leading-relaxed">
+                            הנעליים שלנו נבדקות בקפדנות תחת לחץ של מכבשים כבדים כדי לוודא עמידות מרבית. אנו גאים להיות הבחירה הראשונה של להקות הריקוד הלאומיות בסוואנה ובגני החיות המובילים.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Core Values -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-elephant-100 space-y-6">
+                    <h3 class="text-2xl font-bold text-elephant-900 text-center">הערכים שלנו</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+                        <div class="p-4 bg-pastel-pink/20 rounded-2xl">
+                            <h4 class="font-bold text-elephant-900 mb-1">נוחות ללא פשרות</h4>
+                            <p class="text-xs text-elephant-500">גם משקל של 7 טון מרגיש כמו נוצה.</p>
+                        </div>
+                        <div class="p-4 bg-pastel-yellow/20 rounded-2xl">
+                            <h4 class="font-bold text-elephant-900 mb-1">אופנה סביבתית</h4>
+                            <p class="text-xs text-elephant-500">חומרים ממוחזרים שאינם פוגעים בג'ונגל.</p>
+                        </div>
+                        <div class="p-4 bg-pastel-mint/20 rounded-2xl">
+                            <h4 class="font-bold text-elephant-900 mb-1">שמחה וקצב</h4>
+                            <p class="text-xs text-elephant-500">כי לריקוד אין גיל, משקל או גובה.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 4: CONTACT (צור קשר) ================= -->
+        <section id="view-contact" class="view-section py-12 px-4">
+            <div class="max-w-4xl mx-auto space-y-12">
+                <!-- Header -->
+                <div class="text-center space-y-3">
+                    <span class="bg-pastel-mint text-elephant-900 text-xs font-bold px-3 py-1 rounded-full">נשמח לעזור</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-elephant-900">צור קשר או תאם מדידת רגליים</h2>
+                    <p class="text-elephant-500">מלא את הפרטים ונציג מטעם החברה (או פיל ותיק עם טבלת אקסל) יחזור אליך בהקדם.</p>
+                </div>
+
+                <!-- Form & Details Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Contact Form -->
+                    <form onsubmit="handleContactSubmit(event)" class="bg-white p-8 rounded-3xl shadow-sm border border-elephant-100 space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-elephant-700 mb-1">שם מלא (או שם העדר)</label>
+                            <input type="text" required class="w-full px-4 py-3 rounded-xl border border-elephant-200 focus:outline-none focus:ring-2 focus:ring-elephant-900 text-sm" placeholder="לדוגמה: פילון המרקד">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-elephant-700 mb-1">כתובת מייל / חדק-לק</label>
+                            <input type="email" required class="w-full px-4 py-3 rounded-xl border border-elephant-200 focus:outline-none focus:ring-2 focus:ring-elephant-900 text-sm" placeholder="elephant@savanna-dance.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-elephant-700 mb-1">מידת נעליים משוערת</label>
+                            <select class="w-full px-4 py-3 rounded-xl border border-elephant-200 focus:outline-none focus:ring-2 focus:ring-elephant-900 text-sm bg-white">
+                                <option>מידה 65 - פילון צעיר</option>
+                                <option>מידה 72 - פיל בוגר סטנדרטי</option>
+                                <option>מידה 80+ - זכר אלפא / פיל ענק</option>
+                                <option>אחר (נא לפרט בהודעה)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-elephant-700 mb-1">הודעה או בקשה מיוחדת</label>
+                            <textarea rows="4" required class="w-full px-4 py-3 rounded-xl border border-elephant-200 focus:outline-none focus:ring-2 focus:ring-elephant-900 text-sm" placeholder="ספר לנו על סגנון הריקוד המועדף עליך..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-elephant-900 text-white py-3 rounded-xl font-semibold hover:bg-elephant-700 transition shadow-md">
+                            שלח הודעה 🐘
+                        </button>
+                    </form>
+
+                    <!-- Contact Info & Branch details -->
+                    <div class="space-y-6 flex flex-col justify-between">
+                        <div class="bg-white p-8 rounded-3xl shadow-sm border border-elephant-100 space-y-6">
+                            <h3 class="text-xl font-bold text-elephant-900">פרטי התקשרות</h3>
+                            <div class="space-y-4 text-sm text-elephant-600">
+                                <div class="flex items-center space-x-3 space-x-reverse">
+                                    <span class="text-xl">📍</span>
+                                    <span>שדרות הבאובב 42, שמורת הסוואנה המרכזית</span>
+                                </div>
+                                <div class="flex items-center space-x-3 space-x-reverse">
+                                    <span class="text-xl">📞</span>
+                                    <span>03-555-🐘🐘🐘</span>
+                                </div>
+                                <div class="flex items-center space-x-3 space-x-reverse">
+                                    <span class="text-xl">✉️</span>
+                                    <span>dance@todo-feel.co.il</span>
+                                </div>
+                                <div class="flex items-center space-x-3 space-x-reverse">
+                                    <span class="text-xl">⏰</span>
+                                    <span>שעות פעילות: א'-ה' 08:00 - שקיעה</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fun Badge -->
+                        <div class="bg-gradient-to-r from-pastel-pink/40 to-pastel-yellow/40 p-6 rounded-3xl border border-elephant-100 text-center">
+                            <p class="text-sm font-bold text-elephant-900">✨ משלוחים מהירים עד לבור המים הקרוב אליכם!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Custom Modal for Order Simulation (No alert() used) -->
+    <div id="order-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl space-y-6 transform transition-all">
+            <div class="text-center space-y-2">
+                <div class="text-5xl mb-2">🎉</div>
+                <h3 id="modal-title" class="text-2xl font-bold text-elephant-900">הזמנה התקבלה בהצלחה!</h3>
+                <p id="modal-desc" class="text-sm text-elephant-500">תודה שבחרת בנו. נציג ידאג לשלוח מדיודות וסרטי מדידה לחדק שלך בהקדם.</p>
+            </div>
+            <button onclick="closeOrderModal()" class="w-full bg-elephant-900 text-white py-3 rounded-xl font-semibold hover:bg-elephant-700 transition">
+                סגור
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-elephant-100 py-8 px-4 mt-16 text-center text-sm text-elephant-500">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2 space-x-reverse">
+                <span class="text-xl">🐘🩰</span>
+                <span class="font-bold text-elephant-900">פיל-דה-דאנס © 2026 כל הזכויות שמורות לשומרי הסוואנה</span>
+            </div>
+            <div class="flex space-x-6 space-x-reverse">
+                <button onclick="switchView('home')" class="hover:text-elephant-900">דף בית</button>
+                <button onclick="switchView('offer')" class="hover:text-elephant-900">מה אנחנו מציעים</button>
+                <button onclick="switchView('about')" class="hover:text-elephant-900">אודות</button>
+                <button onclick="switchView('contact')" class="hover:text-elephant-900">צור קשר</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for View Switching & Interactivity -->
+    <script>
+        // Function to dynamically switch views within the single HTML file
+        function switchView(viewId) {
+            // Hide all views
+            const views = document.querySelectorAll('.view-section');
+            views.forEach(view => {
+                view.classList.remove('active');
+            });
+
+            // Show selected view
+            const targetView = document.getElementById('view-' + viewId);
+            if (targetView) {
+                targetView.classList.add('active');
+            }
+
+            // Scroll to top smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Update navigation button active styles
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('bg-pastel-pink/70', 'font-bold');
+            });
+
+            const activeBtn = document.getElementById('nav-' + viewId);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-pastel-pink/70', 'font-bold');
+            }
+        }
+
+        // Toggle mobile dropdown menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Modal triggers for orders
+        function openOrderModal(productName) {
+            const modal = document.getElementById('order-modal');
+            const title = document.getElementById('modal-title');
+            const desc = document.getElementById('modal-desc');
+
+            title.innerText = "הזמנת דגם: " + productName;
+            desc.innerText = "שמחים שבחרת לרקוד איתנו! פיל המכירות שלנו יצור איתך קשר תוך שעות ספורות לתאום מידת רוחב הסוליה.";
+            
+            modal.classList.remove('hidden');
+        }
+
+        function closeOrderModal() {
+            const modal = document.getElementById('order-modal');
+            modal.classList.add('hidden');
+        }
+
+        // Contact form submission handler
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const modal = document.getElementById('order-modal');
+            const title = document.getElementById('modal-title');
+            const desc = document.getElementById('modal-desc');
+
+            title.innerText = "ההודעה התקבלה בהצלחה! 💌";
+            desc.innerText = "תודה שפנית אליהם! החדק שלנו כבר קורא את ההודעה ויחזור אליך בהקדם.";
+            
+            modal.classList.remove('hidden');
+            event.target.reset();
+        }
+    </script>
+
+</body>
+</html>
